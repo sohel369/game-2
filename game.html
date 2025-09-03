@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lost Whistle - Premium Integrity Game</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow: auto;
+    }
+
+    #game-container {
+      background: linear-gradient(145deg, #ffffff, #e6e6e6);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 800px;
+      width: 100%;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      color: #1a2a44;
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #1a2a44;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 1.15rem;
+      color: #34495e;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    #thought-bubble {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(145deg, #f5f7fa, #c3cfe2);
+      border: 2px solid #ffd700;
+      padding: 12px 24px;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #1a2a44;
+      display: none;
+      animation: bubble-pop 0.5s ease-in-out;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes bubble-pop {
+      0% { transform: translateX(-50%) scale(0.6); opacity: 0; }
+      100% { transform: translateX(-50%) scale(1); opacity: 1; }
+    }
+
+    .option-button, .quiz-button {
+      background: linear-gradient(90deg, #ffd700, #ffaa00);
+      color: #1a2a44;
+      border: none;
+      padding: 14px 28px;
+      margin: 10px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-button:hover, .quiz-button:hover {
+      background: linear-gradient(90deg, #ffaa00, #ffd700);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .option-button::after, .quiz-button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, -50%) rotate(45deg);
+      transition: all 0.5s ease;
+      opacity: 0;
+    }
+
+    .option-button:hover::after, .quiz-button:hover::after {
+      opacity: 1;
+      width: 0;
+      height: 0;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: radial-gradient(circle, #ffd700, transparent);
+      border-radius: 50%;
+      animation: sparkle 1s ease-out infinite;
+    }
+
+    @keyframes sparkle {
+      0% { transform: scale(0.4); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    .friend-face {
+      display: inline-block;
+      font-size: 3rem;
+      margin: 12px;
+      transition: transform 0.6s ease;
+    }
+
+    .applaud {
+      animation: bounce 0.5s ease infinite;
+    }
+
+    .distrust {
+      transform: rotate(-8deg) scale(0.85);
+      opacity: 0.7;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    #quiz-section, #reflection-section, #scene {
+      display: none;
+    }
+
+    #start-section {
+      text-align: center;
+      animation: fadeIn 1s ease-in;
+    }
+
+    .input-container {
+      position: relative;
+      width: 85%;
+      max-width: 350px;
+      margin: 0 auto 20px;
+    }
+
+    #player-name {
+      padding: 14px 20px;
+      font-size: 1.1rem;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(145deg, #f5f7fa, #dfe4ea);
+      width: 100%;
+      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      font-family: 'Roboto', sans-serif;
+      color: #1a2a44;
+    }
+
+    #player-name:focus {
+      outline: none;
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.6), inset 0 3px 6px rgba(0, 0, 0, 0.1);
+      background: #ffffff;
+    }
+
+    #player-name::placeholder {
+      color: #7f8c8d;
+      opacity: 0.8;
+      font-style: italic;
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: #ffd700;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    #player-name:focus + .input-icon {
+      opacity: 1;
+    }
+
+    #start-button {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #start-button::before {
+      content: '✨';
+      position: absolute;
+      left: -30px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    #start-button:hover::before {
+      left: 10px;
+      opacity: 1;
+    }
+
+    #quiz-feedback {
+      font-weight: 700;
+      margin: 20px 0;
+      font-size: 1.2rem;
+    }
+
+    #real-stories {
+      background: linear-gradient(145deg, #f5f7fa, #dfe4ea);
+      padding: 25px;
+      border-radius: 15px;
+      margin-top: 30px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #real-stories::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.1), transparent);
+      opacity: 0.5;
+    }
+
+    #real-stories h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #1a2a44;
+      margin-bottom: 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .story-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInStory 0.5s ease-in-out;
+    }
+
+    .story-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .story-card::after {
+      content: '⭐';
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.5rem;
+      color: #ffd700;
+      opacity: 0.3;
+      transition: opacity 0.3s ease;
+    }
+
+    .story-card:hover::after {
+      opacity: 1;
+    }
+
+    .story-card strong {
+      font-size: 1.2rem;
+      color: #1a2a44;
+    }
+
+    .story-card p {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    @keyframes fadeInStory {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #options, #quiz-options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    #progress-bar {
+      height: 12px;
+      background: #dfe4ea;
+      border-radius: 6px;
+      margin-bottom: 25px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #progress {
+      height: 100%;
+      background: linear-gradient(90deg, #ffd700, #ffaa00);
+      width: 0%;
+      transition: width 0.6s ease;
+    }
+
+    #score-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #score-container p {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a2a44;
+    }
+
+    #score-container span {
+      color: #ffd700;
+      font-size: 1.7rem;
+    }
+
+    @media (max-width: 600px) {
+      #game-container {
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      h2 {
+        font-size: 1.7rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .option-button, .quiz-button {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+      }
+
+      .friend-face {
+        font-size: 2.5rem;
+      }
+
+      .input-container {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="progress-bar">
+      <div id="progress"></div>
+    </div>
+    <div id="start-section">
+      <h1>The Lost Whistle</h1>
+      <p>Embark on a Premium Integrity Adventure! Enter your name to start:</p>
+      <div class="input-container">
+        <input id="player-name" type="text" placeholder="Your Name">
+        <span class="input-icon">🏅</span>
+      </div>
+      <button class="option-button" id="start-button" onclick="startGame()">Begin Journey</button>
+    </div>
+    <div id="scene">
+      <h2>Game Scenario</h2>
+      <p id="story-text"></p>
+      <div id="thought-bubble"></div>
+      <div id="options"></div>
+      <div id="consequence"></div>
+      <div id="friend-faces"></div>
+    </div>
+    <div id="quiz-section">
+      <h2>Integrity Challenge</h2>
+      <p id="quiz-question"></p>
+      <div id="quiz-options"></div>
+      <p id="quiz-feedback"></p>
+      <button class="option-button" onclick="nextQuiz()">Next Challenge</button>
+    </div>
+    <div id="reflection-section">
+      <h2>Reflect on Your Integrity</h2>
+      <div id="score-container">
+        <p>Your Integrity Score: <span id="score-value"></span></p>
+        <p id="score-message"></p>
+      </div>
+      <p>How does honesty strengthen your team's trust?</p>
+      <p>What are the consequences of staying silent or ignoring issues?</p>
+      <p><strong>Daily Challenge:</strong> Find a moment today to act with integrity, even when no one is watching.</p>
+      <button class="option-button" onclick="restartGame()">Replay Adventure</button>
+    </div>
+    <div id="real-stories">
+      <h3>Legends of Integrity</h3>
+      <div class="story-card">
+        <p><strong>Lionel Messi:</strong> In 2019, Messi admitted a penalty wasn’t a foul, sacrificing a scoring opportunity for fairness.</p>
+      </div>
+      <div class="story-card">
+        <p><strong>Paolo Di Canio:</strong> During a match, Di Canio halted play to aid an injured goalkeeper, forgoing a goal.</p>
+      </div>
+      <div class="story-card">
+        <p><strong>Ivan Fernandez Anaya:</strong> In a 2012 race, Anaya slowed down to correct a competitor’s early stop, ensuring a fair win.</p>
+      </div>
+      <div class="story-card">
+        <p><strong>Abbey D'Agostino & Nikki Hamblin:</strong> In the 2016 Olympics, after falling, they helped each other finish the 5,000m race, showcasing true sportsmanship.</p>
+      </div>
+      <div class="story-card">
+        <p><strong>Luz Long & Jesse Owens:</strong> In the 1936 Olympics, Long advised Owens on his long jump, aiding his rival’s qualification.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "If the referee misses the ball going out, what’s the right move?",
+        options: [
+          { text: "Stay silent", correct: false },
+          { text: "Raise your hand and admit it", correct: true },
+          { text: "Keep playing", correct: false }
+        ]
+      },
+      {
+        question: "If you win a point unfairly, what should you do?",
+        options: [
+          { text: "Keep it quiet", correct: false },
+          { text: "Admit it, even if you lose the point", correct: true },
+          { text: "Celebrate the luck", correct: false }
+        ]
+      },
+      {
+        question: "If a teammate makes a mistake, what’s best?",
+        options: [
+          { text: "Tease them", correct: false },
+          { text: "Encourage them to keep going", correct: true },
+          { text: "Ignore it", correct: false }
+        ]
+      },
+      {
+        question: "If you find a lost item on the field, what do you do?",
+        options: [
+          { text: "Keep it", correct: false },
+          { text: "Turn it in to lost and found", correct: true },
+          { text: "Leave it there", correct: false }
+        ]
+      },
+      {
+        question: "Is it okay to cheat a little when losing?",
+        options: [
+          { text: "Yes, to win", correct: false },
+          { text: "No, always play fair", correct: true },
+          { text: "It depends", correct: false }
+        ]
+      }
+    ];
+
+    const scenes = [
+      {
+        text: "${playerName} kicks the ball, but it goes out of bounds! The referee doesn’t notice...",
+        thought: "What should I do?",
+        options: [
+          { choice: "honest", text: "Raise hand and admit it", isHonest: true },
+          { choice: "silent", text: "Stay silent", isHonest: false }
+        ],
+        honestCon: "The referee praises ${playerName}’s honesty, earning team respect!",
+        dishonestCon: "${playerName}’s teammates look disappointed and lose trust."
+      },
+      {
+        text: "${playerName} notices a teammate foul an opponent, unnoticed by the referee.",
+        thought: "Should I speak up?",
+        options: [
+          { choice: "tell", text: "Inform the referee", isHonest: true },
+          { choice: "ignore", text: "Stay quiet", isHonest: false }
+        ],
+        honestCon: "${playerName}’s honesty strengthens team unity!",
+        dishonestCon: "Silence leads to unfair play, eroding team trust."
+      },
+      {
+        text: "${playerName} finds a valuable item left on the field after practice.",
+        thought: "What’s the right choice?",
+        options: [
+          { choice: "return", text: "Return it to lost and found", isHonest: true },
+          { choice: "keep", text: "Keep it", isHonest: false }
+        ],
+        honestCon: "${playerName}’s integrity shines, earning admiration!",
+        dishonestCon: "Keeping it leaves ${playerName} feeling uneasy."
+      }
+    ];
+
+    let playerName = '';
+    let integrityScore = 0;
+    let currentScene = 0;
+    let currentQuizIndex = 0;
+    let maxScore = 10 * scenes.length + 5 * questions.length;
+
+    function startGame() {
+      playerName = document.getElementById('player-name').value.trim() || 'Champion';
+      document.getElementById('start-section').style.display = 'none';
+      document.getElementById('scene').style.display = 'block';
+      loadScene();
+    }
+
+    function loadScene() {
+      if (currentScene < scenes.length) {
+        const storyText = document.getElementById('story-text');
+        const thoughtBubble = document.getElementById('thought-bubble');
+        const optionsDiv = document.getElementById('options');
+        const consequence = document.getElementById('consequence');
+        const friendFaces = document.getElementById('friend-faces');
+
+        consequence.innerHTML = '';
+        friendFaces.innerHTML = '';
+        friendFaces.className = '';
+
+        storyText.textContent = scenes[currentScene].text.replace(/\${playerName}/g, playerName);
+        thoughtBubble.textContent = scenes[currentScene].thought;
+        thoughtBubble.style.display = 'block';
+
+        optionsDiv.innerHTML = '';
+        scenes[currentScene].options.forEach(opt => {
+          const button = document.createElement('button');
+          button.classList.add('option-button');
+          button.textContent = opt.text;
+          button.onclick = () => makeDecision(opt);
+          optionsDiv.appendChild(button);
+        });
+
+        updateProgress();
+      } else {
+        document.getElementById('scene').style.display = 'none';
+        document.getElementById('quiz-section').style.display = 'block';
+        loadQuiz();
+      }
+    }
+
+    function makeDecision(opt) {
+      const consequence = document.getElementById('consequence');
+      const friendFaces = document.getElementById('friend-faces');
+      const thoughtBubble = document.getElementById('thought-bubble');
+      const optionsDiv = document.getElementById('options');
+
+      thoughtBubble.style.display = 'none';
+      optionsDiv.innerHTML = '';
+
+      if (opt.isHonest) {
+        consequence.innerHTML = scenes[currentScene].honestCon.replace(/\${playerName}/g, playerName);
+        friendFaces.innerHTML = '🏆😊👍';
+        friendFaces.classList.add('applaud');
+        addSparkles();
+        integrityScore += 10;
+      } else {
+        consequence.innerHTML = scenes[currentScene].dishonestCon.replace(/\${playerName}/g, playerName);
+        friendFaces.innerHTML = '😔😞😕';
+        friendFaces.classList.add('distrust');
+      }
+
+      setTimeout(() => {
+        currentScene++;
+        loadScene();
+      }, 2000);
+    }
+
+    function addSparkles() {
+      const container = document.getElementById('game-container');
+      for (let i = 0; i < 15; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+        sparkle.style.left = `${Math.random() * container.offsetWidth}px`;
+        sparkle.style.top = `${Math.random() * container.offsetHeight}px`;
+        container.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1000);
+      }
+    }
+
+    function loadQuiz() {
+      const quizQuestion = document.getElementById('quiz-question');
+      const quizOptions = document.getElementById('quiz-options');
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.textContent = '';
+      quizQuestion.textContent = questions[currentQuizIndex].question;
+      quizOptions.innerHTML = '';
+      questions[currentQuizIndex].options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.classList.add('quiz-button');
+        button.textContent = option.text;
+        button.onclick = () => checkAnswer(option.correct);
+        quizOptions.appendChild(button);
+      });
+
+      updateProgress();
+    }
+
+    function checkAnswer(isCorrect) {
+      const feedback = document.getElementById('quiz-feedback');
+      const quizOptions = document.getElementById('quiz-options');
+      feedback.textContent = isCorrect ? 'Brilliant! You’re a true integrity champion!' : 'Not quite. Integrity means always choosing the right path.';
+      feedback.style.color = isCorrect ? '#2ecc71' : '#e74c3c';
+      if (isCorrect) {
+        integrityScore += 5;
+      }
+      quizOptions.innerHTML = ''; // Disable buttons after answer
+    }
+
+    function nextQuiz() {
+      currentQuizIndex++;
+      if (currentQuizIndex < questions.length) {
+        loadQuiz();
+      } else {
+        document.getElementById('quiz-section').style.display = 'none';
+        document.getElementById('reflection-section').style.display = 'block';
+        showScore();
+        updateProgress();
+      }
+    }
+
+    function showScore() {
+      document.getElementById('score-value').textContent = `${integrityScore} / ${maxScore}`;
+      let percent = (integrityScore / maxScore) * 100;
+      let msg;
+      if (percent > 80) {
+        msg = 'Outstanding! You’re a beacon of integrity.';
+      } else if (percent > 50) {
+        msg = 'Well done! Keep shining with honesty.';
+      } else {
+        msg = 'Integrity is a journey. Try again to grow!';
+      }
+      document.getElementById('score-message').textContent = msg;
+    }
+
+    function updateProgress() {
+      const totalSteps = scenes.length + questions.length;
+      const completedSteps = currentScene + currentQuizIndex;
+      const progress = document.getElementById('progress');
+      progress.style.width = `${(completedSteps / totalSteps) * 100}%`;
+    }
+
+    function restartGame() {
+      document.getElementById('start-section').style.display = 'block';
+      document.getElementById('scene').style.display = 'none';
+      document.getElementById('quiz-section').style.display = 'none';
+      document.getElementById('reflection-section').style.display = 'none';
+      document.getElementById('player-name').value = '';
+      document.getElementById('consequence').innerHTML = '';
+      document.getElementById('friend-faces').innerHTML = '';
+      document.getElementById('friend-faces').className = '';
+      document.getElementById('progress').style.width = '0%';
+      playerName = '';
+      integrityScore = 0;
+      currentScene = 0;
+      currentQuizIndex = 0;
+    }
+  </script>
+</body>
+</html>
