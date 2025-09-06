@@ -1,857 +1,415 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Lost Whistle - Premium Integrity Game</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Lost Whistle — Integrity Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg: #e6f0ff;
+      --card: #ffffff;
+      --accent: #0288d1;
+      --good: #43a047;
+      --bad: #d32f2f;
+      --muted: #546e7a;
+      --orange: #ff9800;
+      --yellow: #ffca28;
     }
-
+    * { box-sizing: border-box; }
     body {
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #0a1c3a, #1e3c72);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      animation: premiumBackground 12s ease-in-out infinite alternate;
-      width: 100%;
-    }
-
-    @keyframes premiumBackground {
-      0% { background: #0a1c3a; filter: brightness(1); }
-      50% { background: #1e3c72; filter: brightness(1.2); }
-      100% { background: #0a1c3a; filter: brightness(1); }
-    }
-
-    @keyframes radialGlow {
-      0%, 100% { opacity: 0.3; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.2); }
-    }
-
-    #game-container {
-      background: linear-gradient(145deg, #ffffff, #e6e6e6);
-      border-radius: 20px;
-      box-shadow: 0 12px 40px rgba(10, 28, 58, 0.4);
-      max-width: 800px;
-      padding: 40px;
-      position: relative;
-      overflow: hidden;
-      animation: premiumSlideIn 0.8s ease-out, premiumPulse 5s ease-in-out infinite;
-      transform-style: preserve-3d;
-    }
-
-    @keyframes premiumSlideIn {
-      from { opacity: 0; transform: translateY(50px) rotateX(-10deg); }
-      to { opacity: 1; transform: translateY(0) rotateX(0); }
-    }
-
-    @keyframes premiumPulse {
-      0%, 100% { box-shadow: 0 12px 40px rgba(10, 28, 58, 0.4); }
-      50% { box-shadow: 0 20px 60px rgba(10, 28, 58, 0.6); }
-    }
-
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
-      color: #0a1c3a;
-      text-align: center;
-      margin-bottom: 25px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      animation: titleReveal 1.2s ease-out, titleGlow 4s ease-in-out infinite;
-    }
-
-    @keyframes titleReveal {
-      from { opacity: 0; transform: scale(0.8) translateY(-20px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    @keyframes titleGlow {
-      0%, 100% { color: #0a1c3a; text-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
-      50% { color: #ffd700; text-shadow: 0 0 15px rgba(255, 215, 0, 0.7); }
-    }
-
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      color: #0a1c3a;
-      margin-bottom: 20px;
-      font-weight: 700;
-      animation: sectionReveal 1s ease-out;
-    }
-
-    @keyframes sectionReveal {
-      from { opacity: 0; transform: translateX(-30px) rotateY(-10deg); }
-      to { opacity: 1; transform: translateX(0) rotateY(0); }
-    }
-
-    p {
-      font-size: 1.15rem;
-      color: #34495e;
-      line-height: 1.7;
-      margin-bottom: 20px;
-      animation: textFadeIn 1.2s ease-out;
-    }
-
-    @keyframes textFadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    #thought-bubble {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(145deg, #f5f7fa, #c3cfe2);
-      border: 2px solid #ffd700;
-      padding: 12px 24px;
-      border-radius: 15px;
-      font-size: 1.1rem;
-      font-weight: 400;
-      color: #0a1c3a;
-      display: none;
-      animation: bubblePop 0.6s ease-in-out, floatElegant 3s ease-in-out infinite;
-      box-shadow: 0 4px 15px rgba(10, 28, 58, 0.2);
-      transform-style: preserve-3d;
-    }
-
-    @keyframes bubblePop {
-      0% { transform: translateX(-50%) scale(0.5) rotateX(-20deg); opacity: 0; }
-      100% { transform: translateX(-50%) scale(1) rotateX(0); opacity: 1; }
-    }
-
-    @keyframes floatElegant {
-      0%, 100% { transform: translateX(-50%) translateY(0) rotateX(0); }
-      50% { transform: translateX(-50%) translateY(-15px) rotateX(5deg); }
-    }
-
-    .option-button, .quiz-button {
-      background: linear-gradient(90deg, #ffd700, #ffaa00);
-      color: #0a1c3a;
-      border: none;
-      padding: 14px 28px;
-      margin: 10px;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
-      animation: buttonReveal 0.6s ease-out forwards;
-    }
-
-    @keyframes buttonReveal {
-      from { opacity: 0; transform: scale(0.7) rotateY(-15deg); }
-      to { opacity: 1; transform: scale(1) rotateY(0); }
-    }
-
-    .option-button:hover, .quiz-button:hover {
-      background: linear-gradient(90deg, #0a1c3a, #ffd700);
-      transform: translateY(-5px) scale(1.08) rotateY(5deg);
-      box-shadow: 0 8px 20px rgba(10, 28, 58, 0.5);
-      color: #ffffff;
-    }
-
-    .option-button::after, .quiz-button::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
-      transform: translate(-50%, -50%) rotate(45deg);
-      transition: all 0.6s ease;
-      opacity: 0;
-    }
-
-    .option-button:hover::after, .quiz-button:hover::after {
-      opacity: 1;
-      width: 0;
-      height: 0;
-    }
-
-    .sparkle {
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      background: radial-gradient(circle, #ffd700, transparent);
-      border-radius: 50%;
-      animation: sparklePremium 1.2s ease-out infinite;
-    }
-
-    @keyframes sparklePremium {
-      0% { transform: scale(0.3) rotate(0deg); opacity: 1; }
-      50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
-      100% { transform: scale(2.5) rotate(360deg); opacity: 0; }
-    }
-
-    .friend-face {
-      display: inline-block;
-      font-size: 3rem;
-      margin: 12px;
-      transition: transform 0.6s ease;
-      animation: emojiReveal 0.6s ease-out forwards;
-    }
-
-    @keyframes emojiReveal {
-      from { opacity: 0; transform: scale(0.4) rotateZ(-15deg); }
-      to { opacity: 1; transform: scale(1) rotateZ(0); }
-    }
-
-    .applaud {
-      animation: bouncePremium 0.6s ease infinite;
-    }
-
-    .distrust {
-      transform: rotate(-8deg) scale(0.85);
-      opacity: 0.7;
-    }
-
-    @keyframes bouncePremium {
-      0%, 100% { transform: translateY(0) rotateZ(0); }
-      50% { transform: translateY(-12px) rotateZ(5deg); }
-    }
-
-    #quiz-section, #reflection-section, #scene {
-      display: none;
-      animation: sectionFadeIn 1s ease-out;
-    }
-
-    @keyframes sectionFadeIn {
-      from { opacity: 0; transform: translateY(30px) rotateX(-10deg); }
-      to { opacity: 1; transform: translateY(0) rotateX(0); }
-    }
-
-    #start-section {
-      text-align: center;
-      animation: sectionFadeIn 1.2s ease-in;
-    }
-
-    .input-container {
-      position: relative;
-      max-width: 400px;
-      margin: 0 auto 20px;
-      background: linear-gradient(145deg, #ffffff, #e6e6e6);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 15px rgba(10, 28, 58, 0.3), inset 0 2px 5px rgba(255, 215, 0, 0.1);
-      animation: inputReveal 0.8s ease-out;
-      overflow: hidden;
-    }
-
-    @keyframes inputReveal {
-      from { opacity: 0; transform: translateY(20px) scale(0.9); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    #player-name {
-      width: 100%;
-      padding: 14px 20px;
-      font-size: 1.1rem;
-      border: none;
-      border-bottom: 2px solid transparent;
-      background: linear-gradient(145deg, #c0c0c0, #0e3a70);
-      font-family: 'Roboto', sans-serif;
-      color: #0a1c3a;
-      transition: all 0.3s ease;
-      position: relative;
-      z-index: 1;
-    }
-
-    #player-name::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #ffd700, #ffaa00);
-      transition: width 0.4s ease;
-      z-index: -1;
-    }
-
-    #player-name:focus::after,
-    #player-name:hover::after {
-      width: 100%;
-    }
-
-    #player-name:focus {
-      outline: none;
-      border-bottom: 2px solid #ffd700;
-      transform: scale(1.02);
-    }
-
-    #player-name:hover {
-      transform: scale(1.02);
-    }
-
-    #player-name::placeholder {
-      color: #000000;
-      opacity: 0.8;
-      font-style: italic;
-    }
-
-    #start-button {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      margin-top: 15px;
-      background: linear-gradient(90deg, #ffd700, #ffaa00);
-      color: #0a1c3a;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s ease;
-      animation: buttonReveal 0.6s ease-out forwards;
-    }
-
-    #start-button:hover {
-      background: linear-gradient(90deg, #0a1c3a, #ffd700);
-      color: #ffffff;
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(10, 28, 58, 0.4);
-    }
-
-    #start-button::before {
-      content: '✨';
-      position: absolute;
-      left: -30px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.2rem;
-      opacity: 0;
-      transition: all 0.4s ease;
-    }
-
-    #start-button:hover::before {
-      left: 10px;
-      opacity: 1;
-      transform: translateY(-50%) rotate(360deg);
-    }
-
-    #quiz-feedback {
-      font-weight: 700;
-      margin: 20px 0;
-      font-size: 1.2rem;
-      animation: feedbackReveal 0.8s ease-out;
-    }
-
-    @keyframes feedbackReveal {
-      from { opacity: 0; transform: translateY(15px) scale(0.9); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    #real-stories {
-      background: linear-gradient(145deg, #f5f7fa, #dfe4ea);
-      padding: 25px;
-      border-radius: 15px;
-      margin-top: 30px;
-      box-shadow: 0 6px 20px rgba(10, 28, 58, 0.3);
-      position: relative;
-      overflow: hidden;
-      animation: storiesReveal 1.2s ease-out, storiesGlow 6s ease-in-out infinite;
-    }
-
-    @keyframes storiesReveal {
-      from { opacity: 0; transform: scale(0.9) rotateX(-10deg); }
-      to { opacity: 1; transform: scale(1) rotateX(0); }
-    }
-
-    @keyframes storiesGlow {
-      0%, 100% { background: linear-gradient(145deg, #f5f7fa, #dfe4ea); box-shadow: 0 6px 20px rgba(10, 28, 58, 0.3); }
-      50% { background: linear-gradient(145deg, #e6e9f0, #c3cfe2); box-shadow: 0 10px 30px rgba(10, 28, 58, 0.5); }
-    }
-
-    #real-stories::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(255, 215, 0, 0.15), transparent);
-      opacity: 0.4;
-      animation: radialPulsePremium 7s ease-in-out infinite;
-    }
-
-    @keyframes radialPulsePremium {
-      0%, 100% { opacity: 0.4; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(1.15); }
-    }
-
-    #real-stories h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      color: #0a1c3a;
-      margin-bottom: 20px;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-      animation: sectionReveal 0.8s ease-out;
-    }
-
-    .story-card {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
-      animation: storyCardReveal 0.6s ease-in-out forwards;
-    }
-
-    .story-card:nth-child(1) { animation-delay: 0.1s; }
-    .story-card:nth-child(2) { animation-delay: 0.2s; }
-    .story-card:nth-child(3) { animation-delay: 0.3s; }
-    .story-card:nth-child(4) { animation-delay: 0.4s; }
-    .story-card:nth-child(5) { animation-delay: 0.5s; }
-
-    @keyframes storyCardReveal {
-      from { opacity: 0; transform: translateY(20px) rotateX(-15deg); }
-      to { opacity: 1; transform: translateY(0) rotateX(0); }
-    }
-
-    .story-card:hover {
-      transform: translateY(-8px) scale(1.05) rotateY(5deg);
-      box-shadow: 0 10px 25px rgba(10, 28, 58, 0.4);
-      background: linear-gradient(145deg, #ffffff, #f0f4fa);
-    }
-
-    .story-card::after {
-      content: '⭐';
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 1.5rem;
-      color: #ffd700;
-      opacity: 0.3;
-      transition: all 0.4s ease;
-    }
-
-    .story-card:hover::after {
-      opacity: 1;
-      transform: scale(1.3) rotate(30deg);
-    }
-
-    .story-card strong {
-      font-size: 1.2rem;
-      color: #0a1c3a;
-    }
-
-    .story-card p {
+      font-family: 'Comic Neue', sans-serif;
       margin: 0;
-      font-size: 1rem;
-      line-height: 1.6;
+      background: linear-gradient(180deg, var(--bg), #bbdefb);
+      color: #263238;
+      font-size: 18px;
+      line-height: 1.5;
     }
+    .wrap { max-width: 960px; margin: 32px auto; padding: 16px; }
+    header { display: flex; align-items: center; gap: 16px; justify-content: space-between; padding: 16px; background: var(--card); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    header h1 { font-size: 24px; margin: 0; color: var(--accent); }
+    .card { background: var(--card); border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); padding: 24px; margin-top: 24px; }
 
-    #options, #quiz-options {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
+    /* Game area */
+    .scene { min-height: 300px; position: relative; border-radius: 16px; overflow: hidden; border: 2px solid var(--accent); }
+    .field { 
+      width: 100%; 
+      height: 300px; 
+      background: linear-gradient(180deg, #4caf50, #2e7d32); 
+      position: relative; 
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="0" y="0" width="50" height="100" fill="rgba(255,255,255,0.1)"/></svg>'); 
+      background-size: 50px 50px; 
     }
+    .player { position: absolute; bottom: 32px; text-align: center; transition: transform 0.3s ease; }
+    .player:hover { transform: scale(1.1); }
+    .player .body { width: 80px; height: 80px; background: #ffe082; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    .coach .body { background: #90caf9; }
+    .referee .body { background: #fff176; }
+    .carla .body { background: #f06292; }
+    .ball { position: absolute; right: 15%; bottom: 48px; width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle, #fff 10%, #d32f2f 70%); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); animation: bounce 2s infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-    #progress-bar {
-      height: 12px;
-      background: #dfe4ea;
-      border-radius: 6px;
-      margin-bottom: 25px;
-      overflow: hidden;
-      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-      animation: progressReveal 0.8s ease-out;
+    /* Thought bubble */
+    .thought { position: absolute; top: 20px; left: 50px; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.15); transform-origin: top left; animation: pop 0.5s ease; font-weight: 700; }
+    .thought::after { content: ''; position: absolute; left: 16px; bottom: -10px; border-width: 12px 12px 0 0; border-style: solid; border-color: #fff transparent transparent transparent; }
+    @keyframes pop { 0% { transform: scale(0.2) translateY(-20px); opacity: 0; } 80% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+
+    /* Buttons */
+    .choices { display: flex; gap: 16px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+    button.choice { padding: 12px 24px; border-radius: 12px; border: none; background: var(--accent); color: #fff; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background 0.3s, transform 0.2s; font-size: 16px; }
+    button.choice:hover { background: #0277bd; transform: scale(1.05); }
+    button.choice:active { transform: translateY(2px); }
+
+    /* Outcome */
+    .outcome-area { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 16px; }
+    .message { font-weight: 700; font-size: 20px; }
+    .applause { display: flex; gap: 8px; align-items: center; font-size: 24px; animation: fadeIn 0.5s; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Star burst */
+    .burst { position: absolute; top: 10%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+    .star { width: 16px; height: 16px; border-radius: 50%; background: var(--yellow); position: absolute; opacity: 0; animation: burst 1s linear forwards; }
+    @keyframes burst { 0% { transform: translate(0,0) scale(0.2); opacity: 1; } 100% { transform: translate(var(--tx),var(--ty)) scale(1.5); opacity: 0; } }
+
+    /* Quiz */
+    .quiz { display: grid; gap: 16px; }
+    .q { padding: 16px; border-radius: 12px; border: 1px solid #e0f2fe; background: #f5faff; }
+    .options { display: flex; flex-direction: column; gap: 12px; }
+    .opt { padding: 12px; border-radius: 10px; border: 1px solid #e0f2fe; background: #fff; cursor: pointer; transition: transform 0.2s; }
+    .opt:hover { transform: scale(1.02); }
+    .opt.correct { border-color: var(--good); background: #e8f5e9; }
+    .opt.incorrect { border-color: var(--bad); background: #ffebee; }
+
+    /* Badge */
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; background: linear-gradient(90deg, var(--yellow), #ffb300); box-shadow: 0 6px 20px rgba(255,181,0,0.3); font-weight: 700; font-size: 18px; }
+    .badge svg { width: 24px; height: 24px; }
+
+    /* Progress Bar */
+    .progress { width: 100%; height: 10px; background: #e0f2fe; border-radius: 5px; margin-bottom: 24px; overflow: hidden; }
+    .progress-bar { height: 100%; background: var(--accent); border-radius: 5px; transition: width 0.4s ease; }
+
+    /* Certificate */
+    .certificate { margin-top: 24px; padding: 24px; background: linear-gradient(135deg, #fffde7, #fff); border: 3px solid var(--yellow); border-radius: 16px; text-align: center; position: relative; }
+    .certificate h2 { margin: 0; font-size: 28px; color: var(--good); }
+    .certificate::before { content: '🏆'; position: absolute; top: 10px; right: 10px; font-size: 32px; }
+
+    /* Accessibility */
+    button:focus { outline: 3px solid var(--accent); outline-offset: 2px; }
+    [aria-live="polite"] { font-weight: 700; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .wrap { padding: 12px; }
+      .player .body { width: 60px; height: 60px; font-size: 14px; }
+      .ball { right: 10%; width: 32px; height: 32px; }
+      .choices { flex-direction: column; }
+      .thought { left: 20px; font-size: 14px; }
     }
-
-    @keyframes progressReveal {
-      from { opacity: 0; transform: scaleX(0) translateY(10px); }
-      to { opacity: 1; transform: scaleX(1) translateY(0); }
-    }
-
-    #progress {
-      height: 100%;
-      background: linear-gradient(90deg, #ffd700, #0a1c3a);
-      width: 0%;
-      transition: width 0.6s ease;
-      animation: progressGlowPremium 3s ease-in-out infinite;
-    }
-
-    @keyframes progressGlowPremium {
-      0%, 100% { box-shadow: 0 0 8px rgba(255, 215, 0, 0.6); }
-      50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.9); }
-    }
-
-    #score-container {
-      text-align: center;
-      margin-bottom: 20px;
-      animation: scoreReveal 1s ease-out;
-    }
-
-    @keyframes scoreReveal {
-      from { opacity: 0; transform: translateY(25px) scale(0.9); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    #score-container p {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #0a1c3a;
-    }
-
-    #score-container span {
-      color: #ffd700;
-      font-size: 1.7rem;
-      animation: scoreHighlightPremium 2.5s ease-in-out infinite;
-    }
-
-    @keyframes scoreHighlightPremium {
-      0%, 100% { color: #ffd700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
-      50% { color: #ffaa00; text-shadow: 0 0 15px rgba(255, 215, 0, 0.8); }
-    }
-
-    @media (max-width: 600px) {
-      #game-container {
-        padding: 25px;
-      }
-
-      h1 {
-        font-size: 2.2rem;
-      }
-
-      h2 {
-        font-size: 1.7rem;
-      }
-
-      p {
-        font-size: 1rem;
-      }
-
-      .option-button, .quiz-button {
-        padding: 12px 20px;
-        font-size: 0.95rem;
-      }
-
-      .friend-face {
-        font-size: 2.5rem;
-      }
-
-      .input-container {
-        max-width: 90%;
-      }
+    @media (max-width: 320px) {
+      .wrap { padding: 8px; }
+      .player .body { width: 50px; height: 50px; font-size: 12px; }
     }
   </style>
 </head>
 <body>
-  <div id="game-container">
-    <div id="progress-bar">
-      <div id="progress"></div>
-    </div>
-    <div id="start-section">
-      <h1>The Lost Whistle</h1>
-      <p>Embark on a Premium Integrity Adventure! Enter your name to start:</p>
-      <div class="input-container">
-        <input id="player-name" type="text" placeholder="Your Name">
-        <button class="option-button" id="start-button" onclick="startGame()">Begin Journey</button>
+  <div class="wrap">
+    <header>
+      <div style="display:flex;align-items:center;gap:16px">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7l3-7z" fill="#0288d1"/></svg>
+        <div>
+          <h1 id="title">The Lost Whistle — Integrity Game</h1>
+          <div id="subtitle" style="color:var(--muted);font-size:14px">Fun interactive game teaching kids about honesty in sports!</div>
+        </div>
+      </div>
+    </header>
+
+    <div id="progress" class="progress"><div class="progress-bar"></div></div>
+
+    <div class="card">
+      <section id="scene" class="scene">
+        <div class="field" id="field">
+          <div class="coach" id="leo" style="left:5%;">
+            <div class="body">Coach Leo</div>
+          </div>
+          <div class="player" id="nico" style="left:25%;">
+            <div class="body">Nico</div>
+          </div>
+          <div class="carla" id="carla" style="left:45%;">
+            <div class="body">Carla</div>
+          </div>
+          <div class="referee" id="ref" style="right:5%;">
+            <div class="body">Referee</div>
+          </div>
+          <div class="ball" id="ball">⚽</div>
+        </div>
+        <div class="burst" id="burst"></div>
+      </section>
+
+      <div id="ui" style="padding:24px">
+        <!-- decision area -->
+        <div id="decision">
+          <div class="thought" id="thought" aria-live="polite">Nobody saw it... what do I do?</div>
+          <div class="choices">
+            <button class="choice" data-choice="truth" aria-label="Raise hand and tell the truth">Raise hand and tell the truth</button>
+            <button class="choice" data-choice="silent" aria-label="Stay silent">Stay silent</button>
+          </div>
+        </div>
+
+        <!-- outcome area -->
+        <div id="outcome" style="display:none">
+          <div class="outcome-area card" id="outcomeCard">
+            <div class="message" id="msg" aria-live="polite"></div>
+            <div class="applause" id="applause"></div>
+            <div style="font-size:16px;color:var(--muted);text-align:center" id="explain"></div>
+            <div style="margin-top:12px"><button id="nextToReflect" class="choice" aria-label="Continue to reflection">Continue</button></div>
+          </div>
+        </div>
+
+        <!-- reflection -->
+        <div id="reflect" style="display:none;margin-top:24px">
+          <div class="card">
+            <div style="font-weight:700;font-size:20px">Reflection</div>
+            <div style="margin-top:12px">How does your team feel when you tell the truth?</div>
+            <div style="display:flex;gap:12px;margin-top:12px;justify-content:center">
+              <button class="opt-ref" aria-label="Happy">😊 Happy</button>
+              <button class="opt-ref" aria-label="Confused">😕 Confused</button>
+              <button class="opt-ref" aria-label="Proud">😎 Proud</button>
+            </div>
+            <div style="margin-top:16px">Mini-challenge: At practice today, try to be honest even if no one is watching!</div>
+            <div class="card" style="margin-top:24px">
+              <div style="font-weight:700;font-size:18px">Real Story: Lionel Messi & Paolo Di Canio</div>
+              <div style="margin-top:12px">In 2000, Paolo Di Canio stopped a game to help an injured opponent, earning the FIFA Fair Play Award. Lionel Messi once admitted to a referee that he scored with his hand, giving up a goal to stay honest. These choices show how honesty builds trust!</div>
+            </div>
+            <div style="margin-top:12px"><button id="toQuiz" class="choice" aria-label="Take quiz">Take Quiz</button></div>
+          </div>
+        </div>
+
+        <!-- quiz -->
+        <div id="quizWrap" style="display:none;margin-top:24px">
+          <div class="card quiz" id="quiz"></div>
+          <div style="margin-top:16px;text-align:center"><button id="finish" class="choice" aria-label="Finish and claim badge">Finish & Claim Badge</button></div>
+        </div>
+
+        <!-- badge area -->
+        <div id="badgeWrap" style="display:none;margin-top:24px;text-align:center">
+          <div class="card">
+            <div style="font-size:24px;font-weight:700">You Earned a Badge!</div>
+            <div style="margin-top:12px">
+              <span class="badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#263238" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7l3-7z"/></svg>
+                Honesty Star
+              </span>
+            </div>
+            <div style="margin-top:12px;color:var(--muted)">Saved to your browser!</div>
+            <div class="certificate">
+              <h2>Certificate of Honesty</h2>
+              <p>Congratulations! You’ve learned about integrity in sports.</p>
+              <p>Date: September 6, 2025</p>
+              <button id="downloadCert" class="choice" aria-label="Download certificate">Download Certificate</button>
+            </div>
+            <div style="margin-top:16px"><button id="restart" class="choice" aria-label="Play again">Play Again</button></div>
+          </div>
+        </div>
       </div>
     </div>
-    <div id="scene">
-      <h2>Game Scenario</h2>
-      <p id="story-text"></p>
-      <div id="thought-bubble"></div>
-      <div id="options"></div>
-      <div id="consequence"></div>
-      <div id="friend-faces"></div>
-    </div>
-    <div id="quiz-section">
-      <h2>Integrity Challenge</h2>
-      <p id="quiz-question"></p>
-      <div id="quiz-options"></div>
-      <p id="quiz-feedback"></p>
-      <button class="option-button" onclick="nextQuiz()">Next Challenge</button>
-    </div>
-    <div id="reflection-section">
-      <h2>Reflect on Your Integrity</h2>
-      <div id="score-container">
-        <p>Your Integrity Score: <span id="score-value"></span></p>
-        <p id="score-message"></p>
-      </div>
-      <p>How does honesty strengthen your team's trust?</p>
-      <p>What are the consequences of staying silent or ignoring issues?</p>
-      <p><strong>Daily Challenge:</strong> Find a moment today to act with integrity, even when no one is watching.</p>
-      <button class="option-button" onclick="restartGame()">Replay Adventure</button>
-    </div>
-    <div id="real-stories">
-      <h3>Legends of Integrity</h3>
-      <div class="story-card">
-        <p><strong>Lionel Messi:</strong> In 2019, Messi admitted a penalty wasn’t a foul, sacrificing a scoring opportunity for fairness.</p>
-      </div>
-      <div class="story-card">
-        <p><strong>Paolo Di Canio:</strong> During a match, Di Canio halted play to aid an injured goalkeeper, forgoing a goal.</p>
-      </div>
-      <div class="story-card">
-        <p><strong>Ivan Fernandez Anaya:</strong> In a 2012 race, Anaya slowed down to correct a competitor’s early stop, ensuring a fair win.</p>
-      </div>
-      <div class="story-card">
-        <p><strong>Abbey D'Agostino & Nikki Hamblin:</strong> In the 2016 Olympics, after falling, they helped each other finish the 5,000m race, showcasing true sportsmanship.</p>
-      </div>
-      <div class="story-card">
-        <p><strong>Luz Long & Jesse Owens:</strong> In the 1936 Olympics, Long advised Owens on his long jump, aiding his rival’s qualification.</p>
-      </div>
-    </div>
+
+    <footer style="text-align:center;color:var(--muted);margin-top:24px">Built for kids to learn integrity through fun and interactive gameplay!</footer>
   </div>
 
+  <!-- Placeholder for sounds -->
+  <audio id="positiveSound" src="https://example.com/positive.mp3" preload="auto"></audio>
+  <audio id="negativeSound" src="https://example.com/negative.mp3" preload="auto"></audio>
+  <audio id="clickSound" src="https://example.com/click.mp3" preload="auto"></audio>
+
   <script>
-    const questions = [
+    // Quiz questions
+    let questions = [
       {
-        question: "If the referee misses the ball going out, what’s the right move?",
-        options: [
-          { text: "Stay silent", correct: false },
-          { text: "Raise your hand and admit it", correct: true },
-          { text: "Keep playing", correct: false }
-        ]
+        q: "If the referee doesn't see the ball go out, what should you do?",
+        opts: ["Stay silent", "Raise your hand and tell the truth", "Keep playing like nothing happened"],
+        a: 1
       },
       {
-        question: "If you win a point unfairly, what should you do?",
-        options: [
-          { text: "Keep it quiet", correct: false },
-          { text: "Admit it, even if you lose the point", correct: true },
-          { text: "Celebrate the luck", correct: false }
-        ]
+        q: "When you win a point that isn't yours, what's the right thing to do?",
+        opts: ["Keep it secret", "Admit it, even if you lose the point", "Laugh because you got lucky"],
+        a: 1
       },
       {
-        question: "If a teammate makes a mistake, what’s best?",
-        options: [
-          { text: "Tease them", correct: false },
-          { text: "Encourage them to keep going", correct: true },
-          { text: "Ignore it", correct: false }
-        ]
-      },
-      {
-        question: "If you find a lost item on the field, what do you do?",
-        options: [
-          { text: "Keep it", correct: false },
-          { text: "Turn it in to lost and found", correct: true },
-          { text: "Leave it there", correct: false }
-        ]
-      },
-      {
-        question: "Is it okay to cheat a little when losing?",
-        options: [
-          { text: "Yes, to win", correct: false },
-          { text: "No, always play fair", correct: true },
-          { text: "It depends", correct: false }
-        ]
+        q: "If your teammate makes a mistake, what do you do?",
+        opts: ["Tease them", "Encourage them to keep going", "Ignore them"],
+        a: 1
       }
     ];
 
-    const scenes = [
-      {
-        text: "${playerName} kicks the ball, but it goes out of bounds! The referee doesn’t notice...",
-        thought: "What should I do?",
-        options: [
-          { choice: "honest", text: "Raise hand and admit it", isHonest: true },
-          { choice: "silent", text: "Stay silent", isHonest: false }
-        ],
-        honestCon: "The referee praises ${playerName}’s honesty, earning team respect!",
-        dishonestCon: "${playerName}’s teammates look disappointed and lose trust."
-      },
-      {
-        text: "${playerName} notices a teammate foul an opponent, unnoticed by the referee.",
-        thought: "Should I speak up?",
-        options: [
-          { choice: "tell", text: "Inform the referee", isHonest: true },
-          { choice: "ignore", text: "Stay quiet", isHonest: false }
-        ],
-        honestCon: "${playerName}’s honesty strengthens team unity!",
-        dishonestCon: "Silence leads to unfair play, eroding team trust."
-      },
-      {
-        text: "${playerName} finds a valuable item left on the field after practice.",
-        thought: "What’s the right choice?",
-        options: [
-          { choice: "return", text: "Return it to lost and found", isHonest: true },
-          { choice: "keep", text: "Keep it", isHonest: false }
-        ],
-        honestCon: "${playerName}’s integrity shines, earning admiration!",
-        dishonestCon: "Keeping it leaves ${playerName} feeling uneasy."
-      }
-    ];
+    // Elements
+    const choices = document.querySelectorAll('button.choice[data-choice]');
+    const thought = document.getElementById('thought');
+    const decision = document.getElementById('decision');
+    const outcome = document.getElementById('outcome');
+    const msg = document.getElementById('msg');
+    const applause = document.getElementById('applause');
+    const explain = document.getElementById('explain');
+    const nextToReflect = document.getElementById('nextToReflect');
+    const reflect = document.getElementById('reflect');
+    const toQuiz = document.getElementById('toQuiz');
+    const quizWrap = document.getElementById('quizWrap');
+    const quizDiv = document.getElementById('quiz');
+    const finish = document.getElementById('finish');
+    const badgeWrap = document.getElementById('badgeWrap');
+    const restart = document.getElementById('restart');
+    const burst = document.getElementById('burst');
+    const progressBar = document.querySelector('.progress-bar');
 
-    let playerName = '';
-    let integrityScore = 0;
-    let currentScene = 0;
-    let currentQuizIndex = 0;
-    let maxScore = 10 * scenes.length + 5 * questions.length;
-
-    function startGame() {
-      playerName = document.getElementById('player-name').value.trim() || 'Champion';
-      document.getElementById('start-section').style.display = 'none';
-      document.getElementById('scene').style.display = 'block';
-      loadScene();
+    // Shuffle questions
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
     }
 
-    function loadScene() {
-      if (currentScene < scenes.length) {
-        const storyText = document.getElementById('story-text');
-        const thoughtBubble = document.getElementById('thought-bubble');
-        const optionsDiv = document.getElementById('options');
-        const consequence = document.getElementById('consequence');
-        const friendFaces = document.getElementById('friend-faces');
+    // Star burst animation
+    function starBurst() {
+      burst.innerHTML = '';
+      for (let i = 0; i < 10; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const tx = (Math.random() * 200 - 100) + 'px';
+        const ty = (Math.random() * 150 - 75) + 'px';
+        s.style.setProperty('--tx', tx);
+        s.style.setProperty('--ty', ty);
+        s.style.left = '0';
+        s.style.top = '0';
+        burst.appendChild(s);
+      }
+      setTimeout(() => burst.innerHTML = '', 1000);
+    }
 
-        consequence.innerHTML = '';
-        friendFaces.innerHTML = '';
-        friendFaces.className = '';
+    // Update progress
+    function updateProgress(percent) {
+      progressBar.style.width = `${percent}%`;
+    }
 
-        storyText.textContent = scenes[currentScene].text.replace(/\${playerName}/g, playerName);
-        thoughtBubble.textContent = scenes[currentScene].thought;
-        thoughtBubble.style.display = 'block';
+    // Handle decision
+    choices.forEach(btn => btn.addEventListener('click', e => {
+      // document.getElementById('clickSound').play();
+      const c = e.currentTarget.dataset.choice;
+      decision.style.display = 'none';
+      outcome.style.display = 'block';
+      updateProgress(33);
+      if (c === 'truth') {
+        msg.textContent = 'You told the truth — your team trusts you!';
+        applause.innerHTML = '👏👏 Your teammates cheer!';
+        explain.textContent = 'Honesty builds trust and shows courage!';
+        starBurst();
+        // document.getElementById('positiveSound').play();
+      } else {
+        msg.textContent = 'You stayed silent — your teammates seem confused.';
+        applause.innerHTML = '😕 Your teammates look unsure.';
+        explain.textContent = 'Staying quiet can hurt your team’s trust.';
+        // document.getElementById('negativeSound').play();
+      }
+    }));
 
-        optionsDiv.innerHTML = '';
-        scenes[currentScene].options.forEach(opt => {
-          const button = document.createElement('button');
-          button.classList.add('option-button');
-          button.textContent = opt.text;
-          button.onclick = () => makeDecision(opt);
-          optionsDiv.appendChild(button);
+    nextToReflect.addEventListener('click', () => {
+      // document.getElementById('clickSound').play();
+      outcome.style.display = 'none';
+      reflect.style.display = 'block';
+      updateProgress(50);
+    });
+
+    // Reflection buttons
+    document.querySelectorAll('.opt-ref').forEach(b => b.addEventListener('click', e => {
+      // document.getElementById('clickSound').play();
+      e.currentTarget.style.transform = 'scale(1.05)';
+      setTimeout(() => e.currentTarget.style.transform = '', 300);
+    }));
+
+    toQuiz.addEventListener('click', () => {
+      // document.getElementById('clickSound').play();
+      reflect.style.display = 'none';
+      quizWrap.style.display = 'block';
+      renderQuiz();
+      updateProgress(75);
+    });
+
+    function renderQuiz() {
+      questions = shuffle(questions);
+      quizDiv.innerHTML = '';
+      questions.forEach((qq, idx) => {
+        const qWrap = document.createElement('div');
+        qWrap.className = 'q';
+        const qTitle = document.createElement('div');
+        qTitle.textContent = `${idx + 1}. ${qq.q}`;
+        qWrap.appendChild(qTitle);
+        const opts = document.createElement('div');
+        opts.className = 'options';
+        qq.opts.forEach((op, i) => {
+          const b = document.createElement('div');
+          b.className = 'opt';
+          b.textContent = op;
+          b.setAttribute('aria-label', op);
+          b.addEventListener('click', () => {
+            // document.getElementById('clickSound').play();
+            if (b.classList.contains('answered')) return;
+            b.classList.add('answered');
+            if (i === qq.a) {
+              b.classList.add('correct');
+              b.textContent = '✅ ' + b.textContent;
+            } else {
+              b.classList.add('incorrect');
+              b.textContent = '❌ ' + b.textContent;
+            }
+          });
+          opts.appendChild(b);
         });
-
-        updateProgress();
-      } else {
-        document.getElementById('scene').style.display = 'none';
-        document.getElementById('quiz-section').style.display = 'block';
-        loadQuiz();
-      }
-    }
-
-    function makeDecision(opt) {
-      const consequence = document.getElementById('consequence');
-      const friendFaces = document.getElementById('friend-faces');
-      const thoughtBubble = document.getElementById('thought-bubble');
-      const optionsDiv = document.getElementById('options');
-
-      thoughtBubble.style.display = 'none';
-      optionsDiv.innerHTML = '';
-
-      if (opt.isHonest) {
-        consequence.innerHTML = scenes[currentScene].honestCon.replace(/\${playerName}/g, playerName);
-        friendFaces.innerHTML = '🏆😊👍';
-        friendFaces.classList.add('applaud');
-        addSparkles();
-        integrityScore += 10;
-      } else {
-        consequence.innerHTML = scenes[currentScene].dishonestCon.replace(/\${playerName}/g, playerName);
-        friendFaces.innerHTML = '😔😞😕';
-        friendFaces.classList.add('distrust');
-      }
-
-      setTimeout(() => {
-        currentScene++;
-        loadScene();
-      }, 2000);
-    }
-
-    function addSparkles() {
-      const container = document.getElementById('game-container');
-      for (let i = 0; i < 15; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.classList.add('sparkle');
-        sparkle.style.left = `${Math.random() * container.offsetWidth}px`;
-        sparkle.style.top = `${Math.random() * container.offsetHeight}px`;
-        container.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 1200);
-      }
-    }
-
-    function loadQuiz() {
-      const quizQuestion = document.getElementById('quiz-question');
-      const quizOptions = document.getElementById('quiz-options');
-      const feedback = document.getElementById('quiz-feedback');
-      feedback.textContent = '';
-      quizQuestion.textContent = questions[currentQuizIndex].question;
-      quizOptions.innerHTML = '';
-      questions[currentQuizIndex].options.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.classList.add('quiz-button');
-        button.textContent = option.text;
-        button.onclick = () => checkAnswer(option.correct);
-        quizOptions.appendChild(button);
+        qWrap.appendChild(opts);
+        quizDiv.appendChild(qWrap);
       });
-
-      updateProgress();
     }
 
-    function checkAnswer(isCorrect) {
-      const feedback = document.getElementById('quiz-feedback');
-      const quizOptions = document.getElementById('quiz-options');
-      feedback.textContent = isCorrect ? 'Brilliant! You’re a true integrity champion!' : 'Not quite. Integrity means always choosing the right path.';
-      feedback.style.color = isCorrect ? '#2ecc71' : '#e74c3c';
-      if (isCorrect) {
-        integrityScore += 5;
-      }
-      quizOptions.innerHTML = ''; // Disable buttons after answer
-    }
+    finish.addEventListener('click', () => {
+      // document.getElementById('clickSound').play();
+      localStorage.setItem('honestyBadge', 'earned');
+      quizWrap.style.display = 'none';
+      badgeWrap.style.display = 'block';
+      updateProgress(100);
+    });
 
-    function nextQuiz() {
-      currentQuizIndex++;
-      if (currentQuizIndex < questions.length) {
-        loadQuiz();
+    // Download certificate
+    document.getElementById('downloadCert').addEventListener('click', () => {
+      // document.getElementById('clickSound').play();
+      const certText = `Certificate of Honesty\nCongratulations! You've learned about integrity in sports.\nDate: September 6, 2025`;
+      const blob = new Blob([certText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'honesty_certificate.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    restart.addEventListener('click', () => {
+      // document.getElementById('clickSound').play();
+      badgeWrap.style.display = 'none';
+      decision.style.display = 'block';
+      outcome.style.display = 'none';
+      reflect.style.display = 'none';
+      quizWrap.style.display = 'none';
+      updateProgress(0);
+    });
+
+    // On load: check badge
+    window.addEventListener('load', () => {
+      const has = localStorage.getItem('honestyBadge');
+      if (has) {
+        decision.style.display = 'none';
+        outcome.style.display = 'none';
+        reflect.style.display = 'none';
+        quizWrap.style.display = 'none';
+        badgeWrap.style.display = 'block';
+        updateProgress(100);
       } else {
-        document.getElementById('quiz-section').style.display = 'none';
-        document.getElementById('reflection-section').style.display = 'block';
-        showScore();
-        updateProgress();
+        updateProgress(0);
       }
-    }
-
-    function showScore() {
-      document.getElementById('score-value').textContent = `${integrityScore} / ${maxScore}`;
-      let percent = (integrityScore / maxScore) * 100;
-      let msg;
-      if (percent > 80) {
-        msg = 'Outstanding! You’re a beacon of integrity.';
-      } else if (percent > 50) {
-        msg = 'Well done! Keep shining with honesty.';
-      } else {
-        msg = 'Integrity is a journey. Try again to grow!';
-      }
-      document.getElementById('score-message').textContent = msg;
-    }
-
-    function updateProgress() {
-      const totalSteps = scenes.length + questions.length;
-      const completedSteps = currentScene + currentQuizIndex;
-      const progress = document.getElementById('progress');
-      progress.style.width = `${(completedSteps / totalSteps) * 100}%`;
-    }
-
-    function restartGame() {
-      document.getElementById('start-section').style.display = 'block';
-      document.getElementById('scene').style.display = 'none';
-      document.getElementById('quiz-section').style.display = 'none';
-      document.getElementById('reflection-section').style.display = 'none';
-      document.getElementById('player-name').value = '';
-      document.getElementById('consequence').innerHTML = '';
-      document.getElementById('friend-faces').innerHTML = '';
-      document.getElementById('friend-faces').className = '';
-      document.getElementById('progress').style.width = '0%';
-      playerName = '';
-      integrityScore = 0;
-      currentScene = 0;
-      currentQuizIndex = 0;
-    }
+    });
   </script>
 </body>
 </html>
